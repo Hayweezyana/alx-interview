@@ -1,33 +1,25 @@
 #!/usr/bin/python3
 """ Module for 0-minoperations"""
 
+
 def minOperations(n):
-    if n <= 1:
+    """
+    minOperations
+    Gets fewest # of operations needed to result in exactly n H characters
+    """
+    # all outputs should be at least 2 char: (min, Copy All => Paste)
+    if (n < 2):
         return 0
-
-    factors = []
-    d = 2
-
-    # Find all prime factors of n
-    while d * d <= n:
-        while (n % d) == 0:
-            factors.append(d)
-            n //= d
-        d += 1
-    if n > 1:
-        factors.append(n)
-
-    operations = 0
-    clipboard = 0
-
-    for factor in factors:
-        if factor == clipboard:
-            clipboard = 0
-        elif factor > clipboard:
-            operations += 2  # Copy All and Paste
-            clipboard = factor
-        else:
-            operations += 1  # Paste
-            clipboard = factor
-
-    return operations
+    ops, root = 0, 2
+    while root <= n:
+        # if n evenly divides by root
+        if n % root == 0:
+            # total even-divisions by root = total operations
+            ops += root
+            # set n to the remainder
+            n = n / root
+            # reduce root to find remaining smaller vals that evenly-divide n
+            root -= 1
+        # increment root until it evenly-divides n
+        root += 1
+    return ops
